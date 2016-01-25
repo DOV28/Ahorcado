@@ -1,12 +1,17 @@
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
-
+import java.random;
+import java.util.Random;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -19,8 +24,8 @@ import javax.swing.JButton;
  */
 public class VentanaAhorcado extends javax.swing.JFrame {
 
-    String palabraOculta = "LANAS";
     
+     ;
     //contador para saber el numero de fallos
     int numeroFallos = 0;
     /**
@@ -29,48 +34,80 @@ public class VentanaAhorcado extends javax.swing.JFrame {
     public VentanaAhorcado() {
         initComponents();
         //aqui va el codigo que poniamos en el run en ACM
-        cambiaImagenAhorcado();
+        eligePalabraOculta();
     }
-
+    private void eligePalabraOculta(){
+        
+        //Metodo basico de lectura de ficheros en java
+        File fichero = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        Random r = new Random();
+        fichero = new File("src/lemario-20101017.txt");
+        
+        try{
+            fr = new FileReader(fichero);
+            br = new BufferedReader (fr);
+            String linea;
+            int numeroLineasFichero = 0;
+            while((linea=br.readLine())!=null){
+                numeroLineasFichero++;
+            }
+            System.out.println(numeroLineasFichero);
+            int lineaSeleccionada = r.nextInt(numeroLineasFichero);
+            System.out.println(lineaSeleccionada);
+        }
+        for(int i=0;i<lineaSeleccionada;i++){
+            linea = br.readLine();
+        }
+        
+        String[]listaDePalabras = new String[10];
+        Random r =new Random();
+        listaDePalabras[0]="cetys";
+        listaDePalabras[1]="cocos";
+        listaDePalabras[2]="papas";
+        listaDePalabras[3]="locos";
+        listaDePalabras[4]="oveja";
+        listaDePalabras[5]="listo";
+        listaDePalabras[6]="error";
+        listaDePalabras[7]="raros";
+        listaDePalabras[8]="perro";
+        listaDePalabras[9]="gatos";
+        
+        String palabraOculta = listaDePalabras[r.nextInt(9)];
+        System.out.println(palabraOculta);
+        
+        
+    }
+    
     private void cambiaImagenAhorcado(){
-        
-        String nombreImagen = "";
-        
-        
-        
-      ImageIcon imagen=new ImageIcon(getClass().getResource("nombreImagen"));
-      Image auxiliar = a.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT)
-      ImageIcon imageIcon = new ImageIcon(auxiliar);
-      jLabel1.setIcon(imagen);
+       
     }
             
     @Override
     public void paint(Graphics g){
         super.paint(g);
-        g = jPanel2.getGraphics();
+        g = jLabel1.getGraphics();
         Image miImagen = null;
                 
         try {
             //cargamos una imagen
             switch(numeroFallos){
-                case 0:nombreImagen = "/ahorcado_0.png";break;
-                case 1:nombreImagen = "/ahorcado_1.png";break;
-                case 2:nombreImagen = "/ahorcado_2.png";break;
-                case 3:nombreImagen = "/ahorcado_3.png";break;
-                case 4:nombreImagen = "/ahorcado_4.png";break;
-                case 5:nombreImagen = "/ahorcado_5.png";break;
-                case 6:nombreImagen = "/ahorcado_fin.png";break;
-                case -1:nombreImagen = "/acertasteTodo.png";break;
-                default :nombreImagen = "/ahorcado_fin.png";break;
+                case 0:miImagen = ImageIO.read(getClass().getResource("/ahorcado_0.png"));break;
+                case 1:miImagen = ImageIO.read(getClass().getResource("/ahorcado_1.png"));break;
+                case 2:miImagen = ImageIO.read(getClass().getResource("/ahorcado_2.png"));break;
+                case 3:miImagen = ImageIO.read(getClass().getResource("/ahorcado_3.png"));break;
+                case 4:miImagen = ImageIO.read(getClass().getResource("/ahorcado_4.png"));break;
+                case 5:miImagen = ImageIO.read(getClass().getResource("/ahorcado_5.png"));break;
+                case 6:miImagen = ImageIO.read(getClass().getResource("/ahorcado_fin.png"));break;
+                case -1:miImagen = ImageIO.read(getClass().getResource("/acertasteTodo.png"));break;
+                default :miImagen = ImageIO.read(getClass().getResource("/ahorcado_fin.png"));break;
             }
              
-        
+        } catch (IOException ex) {
             
         }
-        ImageIcon a =newImageIcon(getClass().getResource(nombreImagen));
-        Image auxiliar = a.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT)
-        ImageIcon imageIcon =new ImageIcon(auxiliar);
-        jLabel1.setIcon(imageIcon);
+        g.drawImage(miImagen, 0, 0, jLabel1.getWidth(), jLabel1.getHeight(),null);
     }
     
     private void chequeaLetra(JButton boton){
@@ -145,6 +182,8 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         letraV = new javax.swing.JButton();
         letraW = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -365,6 +404,12 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         jLabel1.setText("jLabel1");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, 200, 230));
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 556, 330, 210));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -536,6 +581,8 @@ public class VentanaAhorcado extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JPanel1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton letraA;
     private javax.swing.JButton letraB;
     private javax.swing.JButton letraC;
